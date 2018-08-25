@@ -45,7 +45,8 @@ class JwtChecker:
         if req.path in self.exempt_routes or req.method in self.exempt_methods:
             return
 
-        token = req.headers.get('AUTHORIZATION', '').partition('Bearer ')[2]
+        token = (req.headers.get('AUTHORIZATION', '').partition('Bearer ')[2] 
+                    or req.cookies.get('access_token', ''))
 
         try:
             claims = jwt.decode(token,
